@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">customer-service</a> &gt; <a href="index.source.html" class="el_package">com.tfs.order.mgmt.customer.controller</a> &gt; <span class="el_source">CustomerController.java</span></div><h1>CustomerController.java</h1><pre class="source lang-java linenums">package com.tfs.order.mgmt.customer.controller;
+
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tfs.order.mgmt.customer.domain.entity.Customer;
+import com.tfs.order.mgmt.customer.service.CustomerService;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+/**
+ * This Controller class is responsible to expose following APIs of Customer entity :
+ * &lt;ol&gt;
+ * 		&lt;li&gt;API to retrieve the list of all available Customers.&lt;/li&gt;
+ * 		&lt;li&gt;API to retrieve a customer details by Customer Id.&lt;/li&gt;
+ * 		&lt;li&gt;API to responsible to create a new Customer.&lt;/li&gt;
+ * 		&lt;li&gt;API to responsible to update the details of an existing Customer.&lt;/li&gt;
+ * 		&lt;li&gt;API to responsible to delete the details of an existing Customer.&lt;/li&gt;
+ * &lt;/ol&gt; 
+ *
+ *
+ */
+@RestController
+@RequestMapping(&quot;/customers&quot;)
+<span class="nc" id="L41">public class CustomerController {</span>
+
+<span class="nc" id="L43">	private static final Logger LOG = LoggerFactory.getLogger(CustomerController.class);</span>
+	
+	@Autowired
+	CustomerService customerService;
+	
+	/**
+	 * This API is responsible to retrieve the list of all available Customers.
+	 * 
+	 *
+	 * 
+	 * @return Flux&lt;Customer&gt;
+	 */
+	@GetMapping(value = &quot;/&quot;)
+	public Flux&lt;Customer&gt; getAllCustomer(){
+		
+<span class="nc" id="L58">		LOG.debug(&quot;Get all Customers call initiated at : [&quot; + new Date() + &quot;]&quot;);</span>
+<span class="nc" id="L59">		return customerService.findAllCustomer();</span>
+    }
+	
+	/**
+	 * This API is responsible to retrieve a customer details by Customer Id.
+	 * 
+	 * @param id
+	 * 			Customer Id
+	 * 
+	 *
+	 * 
+	 * @return Mono&lt;ResponseEntity&lt;Customer&gt;&gt;
+	 */
+	@GetMapping(value = &quot;/{id}&quot;)
+    public Mono&lt;ResponseEntity&lt;Customer&gt;&gt; getCustomerById(@PathVariable String id){
+		
+<span class="nc" id="L75">		LOG.debug(&quot;Get Customer by Customer Id[&quot; + id + &quot;] call initiated at : [&quot; + new Date() + &quot;]&quot;);</span>
+		
+<span class="nc" id="L77">        return customerService.findCustomerById(id)</span>
+<span class="nc" id="L78">                .map((customer) -&gt; new ResponseEntity&lt;&gt;(customer, HttpStatus.OK))</span>
+<span class="nc" id="L79">                .defaultIfEmpty(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND));</span>
+    }
+	
+	/**
+	 * This API is responsible to create a new Customer
+	 * 
+	 * @param customer
+	 * 			Customer Entity
+	 * 
+	 *
+	 * 
+	 * @return Mono&lt;Customer&gt;
+	 */
+	@PostMapping(value = &quot;/&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono&lt;Customer&gt; createItem(@RequestBody Customer customer){
+		
+<span class="nc" id="L96">		LOG.debug(&quot;Create Customer call initiated at [&quot; + new Date() + &quot;] with request payload: &quot; </span>
+<span class="nc" id="L97">						+ customer.toString());</span>
+		
+<span class="nc" id="L99">        return customerService.saveCustomer(customer);</span>
+    }
+	
+	/**
+	 * This API is responsible to update the details of an existing Customer
+	 * 
+	 * @param id
+	 * 			Customer Id
+	 * @param customer
+	 * 			Customer Entity
+	 * 
+	 * @return Mono&lt;ResponseEntity&lt;Customer&gt;&gt;
+	 */
+	@PutMapping(value = &quot;/{id}&quot;)
+    public Mono&lt;ResponseEntity&lt;Customer&gt;&gt; updateItem(@PathVariable String id,
+                                                 @RequestBody Customer customer){
+		
+<span class="nc" id="L116">		LOG.debug(&quot;Update Customer[Customer Id: &quot; + id + &quot;] call initiated at [&quot; + new Date() + &quot;] with request payload: &quot; </span>
+<span class="nc" id="L117">				+ customer.toString());</span>
+		
+<span class="nc" id="L119">        return customerService.updateCustomer(id, customer)</span>
+<span class="nc" id="L120">                .map((customerRes) -&gt; new ResponseEntity&lt;&gt;(customerRes, HttpStatus.OK))</span>
+<span class="nc" id="L121">                .defaultIfEmpty(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND));</span>
+    }
+
+	/**
+	 * This API is responsible to delete an existing Customer
+	 * 
+	 * @param id
+	 * 			Customer Id
+	 * 
+	 * @return Mono&lt;ResponseEntity&lt;Customer&gt;&gt;
+	 */
+	@DeleteMapping(value = &quot;/{id}&quot;)
+    public Mono&lt;ResponseEntity&lt;Customer&gt;&gt; deleteItem(@PathVariable String id){
+		
+<span class="nc" id="L135">		LOG.debug(&quot;Delete Customer by Customer Id[&quot; + id + &quot;] call initiated at : [&quot; + new Date() + &quot;]&quot;);</span>
+		
+<span class="nc" id="L137">        return customerService.deleteCustomer(id)</span>
+<span class="nc" id="L138">                .map((customer) -&gt; new ResponseEntity&lt;&gt;(customer, HttpStatus.OK))</span>
+<span class="nc" id="L139">                .defaultIfEmpty(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

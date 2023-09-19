@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">customer-service</a> &gt; <a href="index.source.html" class="el_package">com.tfs.order.mgmt.customer.service.impl</a> &gt; <span class="el_source">CustomerServiceImpl.java</span></div><h1>CustomerServiceImpl.java</h1><pre class="source lang-java linenums">               package com.tfs.order.mgmt.customer.service.impl;
+
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndReplaceOptions;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
+import com.tfs.order.mgmt.customer.constant.Constants;
+import com.tfs.order.mgmt.customer.domain.dto.CustomerCreditLimitEventDTO;
+import com.tfs.order.mgmt.customer.domain.entity.Customer;
+import com.tfs.order.mgmt.customer.enums.ActionType;
+import com.tfs.order.mgmt.customer.repository.CustomerReactiveRepository;
+import com.tfs.order.mgmt.customer.service.CustomerService;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+/**
+ * This Service Implementation class is responsible to for the following functionality of Customer entity :
+ * &lt;ol&gt;
+ * 		&lt;li&gt;API to responsible to create a new Customer.&lt;/li&gt;
+ * 		&lt;li&gt;API to retrieve a customer details by Customer Id.&lt;/li&gt;
+ * 		&lt;li&gt;API to retrieve the list of all available Customers.&lt;/li&gt;
+ * 		&lt;li&gt;API to responsible to update the details of an existing Customer.&lt;/li&gt;
+ * 		&lt;li&gt;API to responsible to delete the details of an existing Customer.&lt;/li&gt;
+ * &lt;/ol&gt; 
+ * 
+ *
+ */
+@Service
+<span class="nc" id="L38">public class CustomerServiceImpl implements CustomerService {</span>
+
+	@Autowired
+	private CustomerReactiveRepository customerReactiveRepository;  
+	
+	@Autowired
+	ReactiveMongoTemplate reactiveMongoTemplate;
+	
+<span class="nc" id="L46">	private static final Logger logger = LogManager.getLogger(CustomerServiceImpl.class);</span>
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Mono&lt;Customer&gt; saveCustomer(Customer customer) {
+<span class="nc" id="L53">		return customerReactiveRepository.insert(customer); </span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Mono&lt;Customer&gt; findCustomerById(String customerId) {
+<span class="nc" id="L61">		return customerReactiveRepository.findById(customerId); </span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Flux&lt;Customer&gt; findAllCustomer() {
+<span class="nc" id="L69">		return customerReactiveRepository.findAll(); </span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Mono&lt;Customer&gt; updateCustomer(String customerId, Customer customer) {
+<span class="nc" id="L77">		Query updateQuery = new Query();</span>
+<span class="nc" id="L78">		updateQuery.addCriteria(Criteria.where(Constants.CUSTOMER_ID_KEY).is(customerId));</span>
+<span class="nc" id="L79">		return reactiveMongoTemplate.findAndReplace(updateQuery, customer, FindAndReplaceOptions.options().returnNew());</span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Mono&lt;Customer&gt; deleteCustomer(String customerId) {
+<span class="nc" id="L87">		Query deleteQuery = new Query();</span>
+<span class="nc" id="L88">		deleteQuery.addCriteria(Criteria.where(Constants.CUSTOMER_ID_KEY).is(customerId));</span>
+<span class="nc" id="L89">		return reactiveMongoTemplate.findAndRemove(deleteQuery, Customer.class);</span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateCustomerCreditLimit(CustomerCreditLimitEventDTO customerCreditLimitEvent) {
+<span class="nc" id="L97">		reactiveMongoTemplate.findById(customerCreditLimitEvent.getCustomerId(), Customer.class)</span>
+<span class="nc" id="L98">				.subscribe((customer) -&gt; {</span>
+<span class="nc" id="L99">					Double currentCreditLimit = customer.getCreditLimit();</span>
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">					if (StringUtils.equals(ActionType.CREDIT_INCREMENT.name(),</span>
+<span class="nc" id="L102">							customerCreditLimitEvent.getActionType().name())) {</span>
+<span class="nc" id="L103">						customer.setCreditLimit(currentCreditLimit + customerCreditLimitEvent.getCreditLimitAmount());</span>
+					} else {
+<span class="nc" id="L105">						customer.setCreditLimit(currentCreditLimit - customerCreditLimitEvent.getCreditLimitAmount());</span>
+					}
+
+<span class="nc" id="L108">					Query updateQuery = new Query();</span>
+<span class="nc" id="L109">					updateQuery.addCriteria(Criteria.where(Constants.CUSTOMER_ID_KEY).is(customer.getId()));</span>
+<span class="nc" id="L110">					reactiveMongoTemplate</span>
+<span class="nc" id="L111">							.findAndReplace(updateQuery, customer, FindAndReplaceOptions.options().returnNew()).block();</span>
+<span class="nc" id="L112">				});</span>
+<span class="nc" id="L113">	}	</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

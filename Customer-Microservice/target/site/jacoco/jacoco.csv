@@ -1,0 +1,20 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+customer-service,com.tfs.order.mgmt.customer.config,KafkaProducerConfig,109,0,0,0,25,0,7,0,7,0
+customer-service,com.tfs.order.mgmt.customer.config,MongoConfig,22,0,0,0,7,0,5,0,5,0
+customer-service,com.tfs.order.mgmt.customer.enums,EventType,21,0,0,0,4,0,1,0,1,0
+customer-service,com.tfs.order.mgmt.customer.enums,ActionType,15,0,0,0,3,0,1,0,1,0
+customer-service,com.tfs.order.mgmt.customer.service.impl,CustomerServiceImpl,120,0,2,0,24,0,10,0,9,0
+customer-service,com.tfs.order.mgmt.customer.domain.dto,CustomerCreditLimitEventDTO,231,0,38,0,8,0,34,0,15,0
+customer-service,com.tfs.order.mgmt.customer.domain.dto,CustomerCreditLimitEventDTO.CustomerCreditLimitEventDTOBuilder,62,0,0,0,1,0,7,0,7,0
+customer-service,com.tfs.order.mgmt.customer.domain.dto,ExchangeEvent.ExchangeEventBuilder,122,0,0,0,1,0,12,0,12,0
+customer-service,com.tfs.order.mgmt.customer.domain.dto,ExchangeEvent,461,0,78,0,13,0,64,0,25,0
+customer-service,com.tfs.order.mgmt.customer,CustomerServiceApplication,10,0,0,0,4,0,3,0,3,0
+customer-service,com.tfs.order.mgmt.customer.listener,CustomerCreditLimitListener,58,0,0,0,13,0,3,0,3,0
+customer-service,com.tfs.order.mgmt.customer.controller,CustomerController,159,0,0,0,20,0,10,0,10,0
+customer-service,com.tfs.order.mgmt.customer.exception,ControllerExceptionHandler,30,0,0,0,7,0,4,0,4,0
+customer-service,com.tfs.order.mgmt.customer.handler,CustomHandlerInterceptor,180,0,2,0,39,0,9,0,8,0
+customer-service,com.tfs.order.mgmt.customer.constant,Constants,3,0,0,0,1,0,1,0,1,0
+customer-service,com.tfs.order.mgmt.customer.producer,ExchangeEventProducer,77,0,0,0,16,0,5,0,5,0
+customer-service,com.tfs.order.mgmt.customer.producer,ExchangeEventProducer.new ListenableFutureCallback() {...},21,0,0,0,5,0,3,0,3,0
+customer-service,com.tfs.order.mgmt.customer.domain.entity,Address,310,0,48,0,9,0,42,0,18,0
+customer-service,com.tfs.order.mgmt.customer.domain.entity,Customer,577,0,90,0,15,0,75,0,30,0

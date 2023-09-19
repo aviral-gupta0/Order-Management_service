@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+event-consumer-service,com.tfs.order.mgmt.event.consumer.constant,Constants,3,0,0,0,1,0,1,0,1,0
+event-consumer-service,com.tfs.order.mgmt.event.consumer.domain.entity,ExchangeEvent,506,0,86,0,4,0,70,0,27,0
+event-consumer-service,com.tfs.order.mgmt.event.consumer.domain.entity,ExchangeEvent.ExchangeEventBuilder,133,0,0,0,1,0,13,0,13,0
+event-consumer-service,com.tfs.order.mgmt.event.consumer.listener,ExchangeEventListener,48,0,0,0,11,0,3,0,3,0
+event-consumer-service,com.tfs.order.mgmt.event.consumer.config,MongoConfig,22,0,0,0,7,0,5,0,5,0
+event-consumer-service,com.tfs.order.mgmt.event.consumer.config,KafkaConsumerConfig,40,0,0,0,8,0,3,0,3,0
+event-consumer-service,com.tfs.order.mgmt.event.consumer.enums,EventType,34,0,0,0,4,0,1,0,1,0
+event-consumer-service,com.tfs.order.mgmt.event.consumer.service.impl,ExchangeEventServiceImpl,14,0,0,0,3,0,2,0,2,0
+event-consumer-service,com.tfs.order.mgmt.event.consumer,EventConsumerServiceApplication,8,0,0,0,3,0,2,0,2,0

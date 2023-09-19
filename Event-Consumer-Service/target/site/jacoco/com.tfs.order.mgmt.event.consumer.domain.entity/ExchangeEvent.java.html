@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExchangeEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">event-consumer-service</a> &gt; <a href="index.source.html" class="el_package">com.tfs.order.mgmt.event.consumer.domain.entity</a> &gt; <span class="el_source">ExchangeEvent.java</span></div><h1>ExchangeEvent.java</h1><pre class="source lang-java linenums">package com.tfs.order.mgmt.event.consumer.domain.entity;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.http.HttpMethod;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.tfs.order.mgmt.event.consumer.enums.EventType;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+<span class="nc" id="L16">@AllArgsConstructor</span>
+<span class="nc" id="L17">@NoArgsConstructor</span>
+<span class="nc bnc" id="L18" title="All 86 branches missed.">@Data</span>
+<span class="nc" id="L19">@Builder</span>
+@JsonInclude(Include.NON_NULL)
+@Document(&quot;exchange_events&quot;)
+public class ExchangeEvent {
+	
+	@Id
+	private String id;
+	private String traceId;
+	private EventType eventType;
+	private String uri;
+	private HttpMethod httpMethodType;
+	private String requestedAt;
+	private String executionDuration;
+	private String executioncompletedAt;
+	private Integer statusCode;
+	private String errorMsg;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

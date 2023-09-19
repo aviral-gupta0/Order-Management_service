@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerServiceApplication.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">customer-service</a> &gt; <a href="index.source.html" class="el_package">com.tfs.order.mgmt.customer</a> &gt; <span class="el_source">CustomerServiceApplication.java</span></div><h1>CustomerServiceApplication.java</h1><pre class="source lang-java linenums">package com.tfs.order.mgmt.customer;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Bean;
+
+import brave.sampler.Sampler;
+
+/**
+ * This class is responsible to start the Customer Microservice and enable the
+ * following functionality :
+ * &lt;ol&gt;
+ * 		&lt;li&gt;&lt;b&gt;@EnableAutoConfiguration:&lt;/b&gt; Enable Spring Boot’s auto-configuration mechanism&lt;/li&gt;
+ * 		&lt;li&gt;&lt;b&gt;@ComponentScan:&lt;/b&gt; Enable @Component scan on the package where the application is located&lt;/li&gt; 
+ * 		&lt;li&gt;&lt;b&gt;@Configuration:&lt;/b&gt; Allow to register extra beans in the context or import additional configuration classes&lt;/li&gt;
+ * 		&lt;li&gt;&lt;b&gt;@EnableDiscoveryClient:&lt;/b&gt; Activates the Netflix Eureka DiscoveryClient implementation&lt;/li&gt;
+ * &lt;ol/&gt;
+ * 
+ *
+ *
+ */
+@SpringBootApplication
+@EnableDiscoveryClient
+<span class="nc" id="L25">public class CustomerServiceApplication {</span>
+	
+	public static void main(String[] args) {
+<span class="nc" id="L28">		SpringApplication.run(CustomerServiceApplication.class, args);</span>
+<span class="nc" id="L29">	}</span>
+	
+	@Bean 
+	public Sampler defaultSampler() { 
+<span class="nc" id="L33">		return Sampler.ALWAYS_SAMPLE; </span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
